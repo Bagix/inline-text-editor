@@ -7,16 +7,17 @@
       @updatedText="changeText"
       @closeEditor="closeTooltip"
       @changeStyle="updateStyle"
+      @changeTextColor="updateTextColor"
       v-if="showEditor"/>
     </transition>
     <p class="editable-text"
     v-on:click="editText"
+    v-bind:style="{color: textColor}"
     v-bind:class="{
       bold: styles.bold,
       italic: styles.italic,
       underline: styles.underline
-    }"
-    >
+    }">
       {{ text }}
     </p>
   </div>
@@ -34,6 +35,7 @@ export default {
     return {
       text: 'Some basic text.Click to edit!',
       showEditor: false,
+      textColor: '',
       styles: {
         bold: false,
         italic: false,
@@ -53,6 +55,9 @@ export default {
     },
     updateStyle: function(style) {
       this.styles[style] = !this.styles[style]
+    },
+    updateTextColor: function(color) {
+      this.textColor = color
     }
   }
 }
@@ -70,6 +75,7 @@ export default {
   .editable-text {
     font-size: 2rem;
     color: #555;
+    transition: color linear .3s;
     &.bold {
       font-weight: bold;
     }

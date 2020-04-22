@@ -1,9 +1,12 @@
 <template>
   <div class="tooltip-box">
     <span class="close-icon" @click="closeEditor">X</span>
-    <button type="button" @click="changeStyle('bold')" class="btn btn-bold">B</button>
-    <button type="button" @click="changeStyle('italic')" class="btn btn-italic">I</button>
-    <button type="button" @click="changeStyle('underline')" class="btn btn-underline">U</button>
+    <div class="container-tools">
+      <button type="button" @click="changeStyle('bold')" class="btn btn-bold" title="Bold">B</button>
+      <button type="button" @click="changeStyle('italic')" class="btn btn-italic" title="italic">I</button>
+      <button type="button" @click="changeStyle('underline')" class="btn btn-underline" title="underline">U</button>
+      <input type="color" name="text-color" v-model="textColor" @input="changeTextColor" title="change color">
+    </div>
     <textarea type="text" v-model="newText" @input="updateText"/>
   </div>
 </template>
@@ -14,7 +17,8 @@ export default {
   props: ['currentText'],
   data() {
     return {
-      newText: this.currentText
+      newText: this.currentText,
+      textColor: ''
     }
   },
   methods: {
@@ -26,6 +30,9 @@ export default {
     },
     changeStyle: function(style) {
       this.$emit('changeStyle', style)
+    },
+    changeTextColor: function() {
+      this.$emit('changeTextColor', this.textColor)
     }
   }
 }
@@ -61,12 +68,21 @@ export default {
       font-weight: bold;
       cursor: pointer;
     }
+    .container-tools {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      width: 100px;
+      margin: 0 auto 1rem;
+    }
     .btn {
       display: inline-block;
+      width: 26px;
       background-color: var(--dirty-orange);
-      border: none;
       border: 1px solid var(--light-pink);
-      margin: 3px;
+      border-radius: 3px;
+      margin: 0 0 5px;
+      font-size: 1rem;
       cursor: pointer;
       &-bold {
         font-weight: bold;
@@ -77,6 +93,11 @@ export default {
       &-underline {
         text-decoration: underline;
       }
+    }
+    input[type=color] {
+      width: 100%;
+      cursor: pointer;
+      border-radius: 3px;
     }
   }
 </style>
